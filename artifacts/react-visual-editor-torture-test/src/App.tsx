@@ -29,6 +29,7 @@ import {
   X,
 } from 'lucide-react';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
+import * as THREE from 'three';
 import NotFound from '@/pages/not-found';
 
 const queryClient = new QueryClient();
@@ -164,6 +165,7 @@ function AppShell() {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const shadowRef = useRef<HTMLDivElement>(null);
+  const footerCanvasRef = useRef<HTMLCanvasElement>(null);
 
   const log = (message: string) => setActivity((current) => [`${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}  ${message}`, ...current].slice(0, 8));
 
@@ -197,6 +199,123 @@ function AppShell() {
     context.strokeStyle = '#f26b45';
     context.lineWidth = 3;
     context.lineCap = 'round';
+  }, []);
+
+  useEffect(() => {
+    const canvas = footerCanvasRef.current;
+    if (!canvas) return;
+
+    const probe = document.createElement('canvas');
+    const webglAvailable = Boolean(
+      probe.getContext('webgl2') ?? probe.getContext('webgl'),
+    );
+
+    if (!webglAvailable) {
+      const context = canvas.getContext('2d');
+      if (!context) return;
+      let frame = 0;
+      const drawFallback = () => {
+        const width = Math.max(canvas.clientWidth, 150);
+        const height = Math.max(canvas.clientHeight, 32);
+        const scale = Math.min(window.devicePixelRatio, 1.5);
+        if (canvas.width !== width * scale || canvas.height !== height * scale) {
+          canvas.width = width * scale;
+          canvas.height = height * scale;
+          context.setTransform(scale, 0, 0, scale, 0, 0);
+        }
+        const time = performance.now() * 0.001;
+        context.clearRect(0, 0, width, height);
+        context.strokeStyle = 'rgba(155, 201, 185, .72)';
+        context.lineWidth = 1;
+        context.beginPath();
+        context.ellipse(width / 2, height / 2, 26, 9, time * 0.35, 0, Math.PI * 2);
+        context.stroke();
+        context.strokeStyle = 'rgba(242, 107, 69, .8)';
+        context.beginPath();
+        context.arc(
+          width / 2 + Math.cos(time * 1.8) * 17,
+          height / 2 + Math.sin(time * 1.8) * 7,
+          8,
+          0,
+          Math.PI * 2,
+        );
+        context.stroke();
+        frame = window.requestAnimationFrame(drawFallback);
+      };
+      drawFallback();
+      return () => window.cancelAnimationFrame(frame);
+    }
+
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        canvas,
+        alpha: true,
+        antialias: true,
+        powerPreference: 'low-power',
+      });
+    } catch {
+      return;
+    }
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 100);
+    camera.position.z = 5.4;
+
+    const field = new THREE.Group();
+    const orange = new THREE.MeshBasicMaterial({
+      color: 0xf26b45,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.8,
+    });
+    const mint = new THREE.MeshBasicMaterial({
+      color: 0x9bc9b9,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.72,
+    });
+    const core = new THREE.Mesh(new THREE.IcosahedronGeometry(0.76, 1), orange);
+    const orbit = new THREE.Mesh(new THREE.TorusGeometry(1.08, 0.018, 8, 48), mint);
+    orbit.rotation.set(0.8, 0.3, 0.2);
+    field.add(core, orbit);
+    scene.add(field);
+
+    const resize = () => {
+      const width = Math.max(canvas.clientWidth, 150);
+      const height = Math.max(canvas.clientHeight, 32);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      renderer.setSize(width, height, false);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+    };
+    resize();
+    const observer = new ResizeObserver(resize);
+    observer.observe(canvas);
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let frame = 0;
+    const animate = () => {
+      if (!reduceMotion) {
+        core.rotation.x += 0.004;
+        core.rotation.y += 0.009;
+        orbit.rotation.z -= 0.006;
+        field.rotation.y = Math.sin(performance.now() * 0.0006) * 0.12;
+      }
+      renderer.render(scene, camera);
+      frame = window.requestAnimationFrame(animate);
+    };
+    animate();
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      observer.disconnect();
+      core.geometry.dispose();
+      orbit.geometry.dispose();
+      orange.dispose();
+      mint.dispose();
+      renderer.dispose();
+    };
   }, []);
 
   const visible = useMemo(() => {
@@ -394,7 +513,11 @@ function AppShell() {
           )}
 
           <footer className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-[hsl(var(--border))] py-6 text-xs text-[hsl(var(--muted-foreground))]" data-testid="footer-lab">
-            <div className="flex items-center gap-2"><Code2 className="h-4 w-4 text-[hsl(var(--primary))]" />No backend · no database · safe local fixtures</div>
+            <div className="relative flex min-h-8 items-center gap-2 overflow-hidden rounded-md border border-[hsl(var(--border))] bg-[hsl(var(--card)/.55)] pr-2" data-testid="footer-fixture-animation">
+              <canvas ref={footerCanvasRef} className="pointer-events-none h-8 w-24 shrink-0" aria-hidden="true" />
+              <Code2 className="relative z-10 h-4 w-4 shrink-0 text-[hsl(var(--primary))]" />
+              <span className="relative z-10">No backend · no database · safe local fixtures</span>
+            </div>
             <div className="mono flex items-center gap-3"><span>React 19</span><span>TypeScript</span><span>Vite</span><span>Tailwind</span></div>
           </footer>
         </div>
