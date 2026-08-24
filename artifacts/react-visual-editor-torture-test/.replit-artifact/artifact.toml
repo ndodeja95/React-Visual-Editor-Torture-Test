@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "React Visual Editor Torture Test"
+description = "A client-side compatibility lab for testing Replit Visual Editor selection, direct editing, source mapping, styling patterns, repeated React components, media, forms, and difficult DOM hit-testing cases."
+version = "1.0.0"
+id = "artifacts/react-visual-editor-torture-test"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21672
+
+[services.development]
+run = "pnpm --filter @workspace/react-visual-editor-torture-test run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/react-visual-editor-torture-test", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/react-visual-editor-torture-test/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21672"
+BASE_PATH = "/"

@@ -1,0 +1,549 @@
+Build a comprehensive React direct-editing compatibility lab named “React Visual Editor Torture Test.”
+
+Purpose:
+This application will be used to test Replit’s Element Selector and Visual Editor across HTML elements, React rendering patterns, Tailwind styles, custom components, repeated components, dynamic content, and difficult DOM-to-source mappings.
+
+The application must make it easy to test one element at a time and record whether:
+
+1. The element can be selected.
+2. The correct source element is identified.
+3. Inline text editing is available.
+4. Style controls are available.
+5. The preview updates immediately.
+6. Save updates the correct source code.
+7. Discard restores the original state.
+8. Editing one instance unexpectedly changes other instances.
+9. React functionality still works after saving.
+10. The app still builds without console or TypeScript errors.
+
+Technology constraints:
+
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS
+- No external UI component library
+- Build all components locally
+- Use semantic HTML wherever possible
+- Do not manually add or modify `data-replit-metadata`, `data-component-name`, or other Replit-owned instrumentation
+- Add human-readable `data-testid` values to test targets
+- Keep the application entirely client-side
+- Do not add a database or backend
+- Do not use dangerous remote scripts
+- Use only safe local assets, data URLs, or stable public sample media
+- The final app must run successfully without TypeScript, build, or browser-console errors
+
+Important:
+Do not “simplify” or consolidate the test cases. Many sections intentionally render visually similar elements using different React source patterns. Their differences are the point of the lab.
+
+APPLICATION STRUCTURE
+
+Create a polished documentation-style application with:
+
+- A sticky left navigation listing every test category.
+- A sticky top bar containing:
+  - App title
+  - Search/filter field
+  - “Show all”
+  - “Only expected direct edits”
+  - “Only expected Agent fallback”
+  - “Reset runtime state”
+- A main test-case grid.
+- A visible status area showing the last runtime interaction.
+- A responsive mobile layout.
+- Dark and light theme controls.
+- Clear focus states and accessible labels.
+
+Every test case must be displayed in a bordered card containing:
+
+- Unique test ID, such as TEXT-001.
+- Test-case title.
+- Source-pattern label.
+- Expected behavior badge:
+  - Direct edit
+  - Changes all instances
+  - Agent fallback expected
+  - Selection only
+  - Runtime-generated
+- The actual rendered test target.
+- A short “Manual test” instruction.
+- An “Interaction result” area when applicable.
+
+Give the test target itself a data-testid matching the test ID, for example:
+
+data-testid="TEXT-001-target"
+
+Do not put the test ID only on the outer card. Put it on the element users should select.
+
+HTML ELEMENT COVERAGE
+
+Create separate, clearly labeled examples for as many valid, renderable HTML elements as reasonably possible.
+
+1. Document and sectioning elements
+
+- header
+- nav
+- main
+- section
+- article
+- aside
+- footer
+- address
+- search
+- div
+
+2. Headings and grouping
+
+- h1 through h6
+- hgroup
+- p
+- hr
+- pre
+- blockquote
+- figure
+- figcaption
+
+3. Lists
+
+- ul
+- ol
+- menu
+- li
+- dl
+- dt
+- dd
+
+4. Inline text semantics
+
+- span
+- a
+- abbr
+- b
+- bdi
+- bdo
+- br
+- cite
+- code
+- data
+- del
+- dfn
+- em
+- i
+- ins
+- kbd
+- mark
+- q
+- ruby
+- rt
+- rp
+- s
+- samp
+- small
+- strong
+- sub
+- sup
+- time
+- u
+- var
+- wbr
+
+5. Images and media
+
+- img with literal src
+- img with expression-based src
+- picture
+- source
+- map
+- area
+- audio
+- video
+- track
+- iframe using safe srcDoc content
+- object or embed only if it can be demonstrated safely
+- canvas with a small React effect that draws a diagram
+- inline SVG with one color
+- inline SVG with multiple colors
+- SVG containing title, desc, g, path, circle, rect, line, polyline, polygon, ellipse, text, defs, linearGradient, stop, clipPath, and use
+
+6. Tables
+
+- table
+- caption
+- colgroup
+- col
+- thead
+- tbody
+- tfoot
+- tr
+- th
+- td
+
+Include colspan, rowspan, row headers, column headers, and responsive overflow.
+
+7. Forms
+
+- form
+- fieldset
+- legend
+- label
+- input examples for:
+  - text
+  - search
+  - email
+  - password
+  - number
+  - tel
+  - url
+  - date
+  - datetime-local
+  - month
+  - week
+  - time
+  - color
+  - range
+  - checkbox
+  - radio
+  - file
+  - hidden
+  - submit
+  - reset
+  - button
+- button
+- select
+- optgroup
+- option
+- datalist
+- textarea
+- output
+- progress
+- meter
+
+Include both controlled and uncontrolled React form elements.
+
+8. Interactive elements
+
+- details and summary
+- dialog opened with showModal()
+- buttons with click handlers
+- links with click handlers
+- elements using tabIndex
+- draggable elements
+- contentEditable test target
+- popover API example if supported, with a graceful fallback
+
+9. Nonvisual/source-only elements
+
+Create a documentation section explaining why these cannot be selected normally:
+
+- html
+- head
+- body
+- title
+- meta
+- link
+- style
+- script
+- template
+- noscript
+
+Do not try to make invisible elements selectable. Show their source examples as escaped code.
+
+REACT SOURCE-PATTERN TESTS
+
+Create visually similar elements implemented with each of the following patterns. Keep each as a separate test case.
+
+A. Text ownership patterns
+
+- Plain literal:
+  <p>Literal text</p>
+
+- String expression:
+  <p>{"String expression"}</p>
+
+- Variable binding:
+  <p>{title}</p>
+
+- Object-property binding:
+  <p>{product.name}</p>
+
+- Mixed literal and expression:
+  <p>Hello {userName}!</p>
+
+- Mixed direct and nested text:
+  <p>Hello <strong>important</strong> world</p>
+
+- Multiple direct text segments:
+  <p>Before <span>middle</span> after</p>
+
+- Conditional text:
+  <p>{enabled ? "Enabled" : "Disabled"}</p>
+
+- Template-literal text:
+  <p>{`Hello ${userName}`}</p>
+
+- Function-produced text:
+  <p>{formatLabel(product)}</p>
+
+- Long multiline static text
+- Text containing apostrophes, quotes, emoji, Unicode, RTL text, and line breaks
+- Empty text element
+- Whitespace-only text element
+
+B. Repetition and identity
+
+- Three explicit sibling cards written as separate JSX.
+- Three calls to one shared Card component with different literal props.
+- Three calls to a shared component containing the same hardcoded inner button label.
+- A `.map()` over static data with stable ID keys.
+- A `.map()` using array-index keys.
+- A `.map()` whose text comes from item data.
+- A `.map()` containing hardcoded text.
+- Nested `.map()` calls.
+- A reusable component rendered in two unrelated page sections.
+- A component rendered conditionally.
+- A component rendered through a fragment.
+- A component wrapped in React.memo.
+- A component created with forwardRef.
+- A component rendered through createPortal inside the dialog.
+
+Clearly show whether a visual edit is expected to affect one instance or all source-sharing instances.
+
+C. Custom component prop behavior
+
+Build custom components covering:
+
+- Component that forwards all DOM props with {...props}.
+- Component that deliberately does not forward unknown props.
+- Component that forwards className but not other props.
+- Component that merges its className with incoming className.
+- Component with a literal root element.
+- Component that chooses its root tag through an `as` prop.
+- Component with multiple possible root elements.
+- Component whose root changes based on a condition.
+- Component that returns a fragment.
+- Compound component such as Card.Header, Card.Body, and Card.Footer.
+- Custom hook-driven component.
+- Error boundary with a safe “trigger/reset” demo.
+
+D. Class and Tailwind patterns
+
+Create separate targets for:
+
+- Literal Tailwind className.
+- Multiline literal className.
+- Template-literal className.
+- Ternary className.
+- Array-joined className.
+- Local `cn()` helper call.
+- Props-derived className.
+- Responsive classes.
+- Dark-mode classes.
+- hover, focus, active, disabled, group, and peer variants.
+- Arbitrary Tailwind values.
+- Tailwind important modifier.
+- CSS variable used from Tailwind.
+- Inherited text color.
+- Parent-controlled typography.
+- Conflicting Tailwind utilities.
+- Inline style overriding Tailwind.
+- Stylesheet rule overriding Tailwind.
+- A high-specificity selector.
+- An `!important` stylesheet declaration.
+- Pseudo-element content using ::before or ::after.
+- A CSS transition and transform.
+- Absolute and fixed positioning.
+- z-index and overlapping elements.
+- opacity, visibility, overflow, and pointer-events examples.
+- display: none target documented as intentionally unselectable.
+
+E. Style-source patterns
+
+Create separate examples for:
+
+- Literal inline-style object.
+- Inline-style object stored in a variable.
+- Spread style object.
+- Conditional style object.
+- Style produced by a function.
+- CSS custom properties.
+- Inherited styles.
+- Styles controlled by React state.
+- Animation styles that change over time.
+- Styles applied to a parent but visually affecting a child.
+- SVG presentation attributes.
+- SVG styles inherited through currentColor.
+
+F. Stateful and event-driven React
+
+Include functional test cases for:
+
+- Counter button.
+- Toggle button with aria-pressed.
+- Tabs with aria-selected.
+- Accordion.
+- Dropdown.
+- Controlled text input.
+- Uncontrolled text input.
+- Form submission.
+- Drag-and-drop reorder demo.
+- Delayed content appearing after two seconds.
+- Element inserted after a state update.
+- List that can add, remove, sort, and reverse items.
+- Modal/dialog rendered through a portal.
+- Error boundary demo.
+- Suspense with a short artificial delay.
+- Element whose text changes every second.
+- Element whose class changes after a click.
+
+After visual edits, these interactions must continue working.
+
+G. Difficult selection and hit-testing
+
+Create cases for:
+
+- Nested button text and icon.
+- Link containing several nested elements.
+- Parent and child with identical bounds.
+- Overlapping siblings.
+- Pointer-events-none child.
+- Transparent overlay.
+- Absolutely positioned child.
+- Transformed and scaled element.
+- Rotated element.
+- Clipped element.
+- Scrollable container.
+- Sticky element.
+- Very small element.
+- Element partly outside its container.
+- Deeply nested element.
+- Single-color SVG icon inside a button.
+- Multi-color SVG artwork.
+- Element inside same-origin srcDoc iframe.
+- Portal-rendered element.
+- Shadow DOM custom element.
+
+For the Shadow DOM case, register a small custom element in React. Explain on the card that Tailwind styles and ordinary document selectors do not cross the Shadow DOM boundary automatically.
+
+TAILWIND CUSTOM COMPONENTS
+
+Create these local components without using a component library:
+
+- Button
+- IconButton
+- Badge
+- Alert
+- Card
+- Avatar
+- Input
+- Select
+- Checkbox
+- RadioGroup
+- Tabs
+- Accordion
+- Dropdown
+- Tooltip
+- Dialog
+- Table
+- ProgressBar
+- MediaCard
+- NavigationBar
+- Sidebar
+- PricingCard
+
+For each important component, provide:
+
+1. One explicit static rendering.
+2. Multiple shared-component call sites.
+3. A mapped/data-driven rendering.
+4. At least one dynamic class or dynamic prop variant.
+
+Use realistic Tailwind styling so color, spacing, border, typography, sizing, layout, and responsive controls can be tested.
+
+TEST MATRIX
+
+Create a file named:
+
+DIRECT_EDIT_TEST_MATRIX.md
+
+It must contain one row per test case with these columns:
+
+- Test ID
+- Category
+- HTML tag or component
+- Source pattern
+- Expected selection behavior
+- Expected direct-edit behavior
+- Expected edit scope
+- Manual steps
+- Pass criteria
+- Result
+- Notes
+
+Pre-fill Result with “Not tested.”
+
+Also render a condensed version of this matrix in the application. Include filters for:
+
+- Direct edit expected
+- Agent fallback expected
+- All-instance behavior expected
+- Selection-only
+- Stateful
+- Media
+- Form
+- SVG
+- Difficult hit-testing
+
+MANUAL TEST PROTOCOL
+
+Display these instructions prominently in the app:
+
+1. Activate Replit Visual Editor.
+2. Select the target bearing the displayed test ID.
+3. Confirm the correct element is highlighted.
+4. Confirm whether related instances are also highlighted.
+5. Attempt the change described on the card.
+6. Verify the preview.
+7. Discard once and verify restoration.
+8. Repeat and save.
+9. Inspect the resulting source file.
+10. Verify only the expected source location changed.
+11. Exercise the element’s interaction again.
+12. Reload the application.
+13. Confirm the change persisted.
+14. Check the browser console and build output.
+15. Record Pass, Fail, Partial, or Agent fallback in DIRECT_EDIT_TEST_MATRIX.md.
+
+IMPLEMENTATION QUALITY
+
+- Organize test data and reusable display chrome cleanly, but do not abstract away the source patterns being tested.
+- Keep explicit JSX cases explicit.
+- Keep `.map()` cases genuinely mapped.
+- Add comments identifying intentionally difficult patterns.
+- Use stable keys wherever the test is specifically about stable keys.
+- Use index keys only in the explicitly labeled index-key test.
+- Prevent accidental form navigation or full-page reloads.
+- Make all normal controls keyboard accessible.
+- Provide meaningful alt text and ARIA labels.
+- Ensure every test card remains visually distinguishable.
+- Ensure the application remains usable on mobile.
+- Avoid excessive animation that would make element selection difficult outside the animation-specific tests.
+
+FINAL VERIFICATION
+
+Before finishing:
+
+1. Run the TypeScript check.
+2. Run the production build.
+3. Open the application.
+4. Exercise every interactive demo at least once.
+5. Check for browser-console errors.
+6. Fix all unexpected errors.
+7. Confirm DIRECT_EDIT_TEST_MATRIX.md contains every on-screen test ID.
+8. Report:
+   - Total number of test cases.
+   - Total number of HTML tags covered.
+   - Any elements intentionally excluded.
+   - Any tests expected to require Agent fallback.
+   - Any known browser limitations.
+
+Do not remove failing or difficult cases just to make the app look successful. This application exists to expose Visual Editor limitations.
