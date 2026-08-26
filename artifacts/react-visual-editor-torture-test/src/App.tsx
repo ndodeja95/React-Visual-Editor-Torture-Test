@@ -420,6 +420,7 @@ function AppShell() {
               <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-[.98] tracking-[-.06em] sm:text-6xl">Break the editor<br /><span className="text-[hsl(var(--primary))]">before users do.</span></h1>
               <p className="mt-5 max-w-xl text-sm leading-6 text-[hsl(var(--muted-foreground))]">A deliberate set of source-mapping traps for React 19, TypeScript, Vite, and Tailwind. Select an element. Edit it. Move it. Make it appear.</p>
             </div>
+             <span className="absolute right-24 top-12 h-4 w-4 rounded-full bg-green-400 ring-4 ring-green-300/20 shadow-[0_0_18px_6px_rgba(74,222,128,0.7)]" aria-hidden="true" />
             <div className="absolute -right-8 -top-8 hidden h-56 w-56 rotate-12 border-[20px] border-[hsl(var(--primary)/.16)] sm:block" aria-hidden="true" />
             <div className="mt-7 grid max-w-3xl grid-cols-2 gap-2 border-t border-[hsl(var(--border))] pt-4 sm:grid-cols-4">
               <div><div className="mono text-xl font-semibold text-[hsl(var(--primary))]">{catalog.length}</div><div className="eyebrow mt-1 text-[hsl(var(--muted-foreground))]">test cases</div></div>
