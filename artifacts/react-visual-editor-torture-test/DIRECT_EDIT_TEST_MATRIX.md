@@ -4,7 +4,6 @@ Use this matrix during a manual pass in the Visual Editor. Every rendered fixtur
 
 | Test ID | Category | HTML tag or component | Source pattern | Expected selection behavior | Expected direct-edit behavior | Expected edit scope | Manual steps | Pass criteria | Result | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| DOC-001 | Document & sectioning | article, header, nav, footer | JSX / semantic shell | Select each landmark | Direct edit | One source node | Select article, header, nav, and footer; edit one label | Correct landmark maps and only its label changes | Not tested. | |
 | HEAD-001 | Headings & grouping | h1 through h6 | Explicit sibling JSX | Select each heading level | Direct edit | One heading | Select every level and compare source mapping | Correct heading source is identified | Not tested. | |
 | HEAD-002 | Headings & grouping | div, p, blockquote | Grouping primitives | Select quote and paragraph | Direct edit | One target | Edit quote and attribution independently | Neighboring text remains unchanged | Not tested. | |
 | PARA-001 | Headings & grouping | p | Literal standalone paragraph | Select the paragraph itself | Direct edit | One paragraph source node | Select and edit the paragraph; compare the neighboring note | Paragraph text changes without changing the neighboring note | Not tested. | |

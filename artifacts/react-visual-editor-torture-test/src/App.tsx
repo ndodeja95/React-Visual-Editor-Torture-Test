@@ -57,7 +57,6 @@ type CatalogItem = {
 };
 
 const catalog: CatalogItem[] = [
-  { id: 'DOC-001', title: 'Document outline', category: 'Document & sectioning', pattern: 'JSX / semantic shell', expected: 'Direct edit', filters: ['direct-edit'], instruction: 'Select the article, header, nav, and footer separately. Edit one visible label without changing the outline.' },
   { id: 'HEAD-001', title: 'Heading ladder', category: 'Headings & grouping', pattern: 'h1 → h6 siblings', expected: 'All instances', filters: ['all-instance'], instruction: 'Select each heading level and compare source mapping for repeated heading tags.' },
   { id: 'HEAD-002', title: 'Grouping primitives', category: 'Headings & grouping', pattern: 'div / p / blockquote', expected: 'Direct edit', filters: ['direct-edit'], instruction: 'Try editing the callout quote and paragraph independently. The attribution must remain stable.' },
   { id: 'PARA-001', title: 'Standalone paragraph', category: 'Headings & grouping', pattern: 'literal p element', expected: 'Direct edit', filters: ['direct-edit'], instruction: 'Select this paragraph as a standalone source target, edit its text, then verify the neighboring note stays unchanged.' },
@@ -98,7 +97,6 @@ const catalog: CatalogItem[] = [
 ];
 
 const categories = [
-  'Document & sectioning',
   'Headings & grouping',
   'Lists',
   'Inline semantics',
@@ -131,7 +129,7 @@ function TestCard({ id, title, pattern, expected, instruction, children, result 
         <span className="rounded-full border border-[hsl(var(--primary)/.35)] bg-[hsl(var(--primary)/.1)] px-2 py-1 text-[10px] font-semibold uppercase tracking-[.08em] text-[hsl(var(--primary))]" data-testid={`badge-expected-${id}`}>{expected}</span>
       </div>
       <div className="mt-3 flex flex-wrap gap-1.5 pl-2">
-        {id !== 'DOC-001' && <span className="source-chip mono rounded px-2 py-1 text-[10px]" data-testid={`text-pattern-${id}`}>{pattern}</span>}
+        <span className="source-chip mono rounded px-2 py-1 text-[10px]" data-testid={`text-pattern-${id}`}>{pattern}</span>
       </div>
       <div className="target-well mt-4 min-h-[74px] rounded-md p-3" data-testid={`${id}-target`}>{children}</div>
       <div className="mt-3 grid gap-2 border-t border-[hsl(var(--border))] pt-3 pl-2 text-xs">
@@ -424,7 +422,7 @@ function AppShell() {
             <div className="absolute -right-8 -top-8 hidden h-56 w-56 rotate-12 border-[20px] border-[hsl(var(--primary)/.16)] sm:block" aria-hidden="true" />
             <div className="mt-7 grid max-w-3xl grid-cols-2 gap-2 border-t border-[hsl(var(--border))] pt-4 sm:grid-cols-4">
               <div><div className="mono text-xl font-semibold text-[hsl(var(--primary))]">{catalog.length}</div><div className="eyebrow mt-1 text-[hsl(var(--muted-foreground))]">test cases</div></div>
-              <div><div className="mono text-xl font-semibold">14</div><div className="eyebrow mt-1 text-[hsl(var(--muted-foreground))]">categories</div></div>
+              <div><div className="mono text-xl font-semibold">13</div><div className="eyebrow mt-1 text-[hsl(var(--muted-foreground))]">categories</div></div>
               <div><div className="mono text-xl font-semibold">0</div><div className="eyebrow mt-1 text-[hsl(var(--muted-foreground))]">network deps</div></div>
               <div><div className="mono text-xl font-semibold text-[hsl(var(--secondary-foreground))]">19</div><div className="eyebrow mt-1 text-[hsl(var(--muted-foreground))]">react target</div></div>
             </div>
@@ -475,7 +473,6 @@ function AppShell() {
                   </div>
                   <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                     {items.map((item) => {
-                      if (item.id === 'DOC-001') return <TestCard key={item.id} {...item}><article><header data-testid="DOC-001-target-header"><strong>Lab report</strong><span className="ml-2 text-xs text-[hsl(var(--muted-foreground))]">semantic shell</span></header><nav className="mt-2 flex gap-3 text-xs underline decoration-[hsl(var(--primary))] underline-offset-4"><a href="#section-Forms" data-testid="link-doc-forms">Forms</a><a href="#section-Stateful%20demos" data-testid="link-doc-state">State</a></nav><footer className="mt-3 text-xs text-[hsl(var(--muted-foreground))]" data-testid="text-doc-footer">End of fixture</footer></article></TestCard>;
                       if (item.id === 'HEAD-001') return <TestCard key={item.id} {...item}><div className="space-y-1" data-testid="HEAD-001-target-heading-ladder"><h1 className="text-xl font-bold">Heading one</h1><h2 className="text-base font-semibold">Heading two</h2><h3 className="text-sm font-semibold">Heading three</h3><h4 className="text-xs font-semibold">Heading four</h4></div></TestCard>;
                       if (item.id === 'HEAD-002') return <TestCard key={item.id} {...item}><div data-testid="HEAD-002-target-group"><p className="text-xs">A paragraph with a clear grouping boundary.</p><blockquote className="mt-2 border-l-2 border-[hsl(var(--primary))] pl-3 text-xs italic">“Map the node, not the noise.”</blockquote><cite className="mt-1 block text-[10px] text-[hsl(var(--muted-foreground))]">— protocol note</cite></div></TestCard>;
                       if (item.id === 'PARA-001') return <TestCard key={item.id} {...item} result="Standalone paragraph target"><div className="grid gap-2"><p className="rounded border border-[hsl(var(--primary)/.35)] bg-[hsl(var(--accent)/.18)] p-3 text-sm leading-6" data-testid="PARA-001-target-paragraph">A paragraph with its own source boundary.<br />This second line stays inside the same paragraph element for direct-edit testing.</p><span className="mono text-[10px] text-[hsl(var(--muted-foreground))]" data-testid="PARA-001-neighbor">neighboring note remains separate</span></div></TestCard>;
