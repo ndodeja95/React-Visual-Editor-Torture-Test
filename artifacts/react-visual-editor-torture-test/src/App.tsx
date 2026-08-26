@@ -434,7 +434,7 @@ function AppShell() {
                 <div className="rounded-md bg-[hsl(var(--primary))] p-2 text-[hsl(var(--primary-foreground))]"><MousePointer2 className="h-4 w-4" /></div>
                 <div className="min-w-0 flex-1">
                   <div className="eyebrow text-[hsl(var(--primary))]">Manual protocol</div>
-                  <h2 className="mt-1 text-lg font-semibold">One pass. Three questions.</h2>
+                  <h2 className="mt-1 text-base font-semibold md:text-lg">One pass. Three questions.</h2>
                   <div className="mt-3 grid gap-2 text-sm text-[hsl(var(--muted-foreground))] sm:grid-cols-3">
                     <div><span className="mono mr-2 text-[hsl(var(--primary))]">01</span>Can I select the intended node?</div>
                     <div><span className="mono mr-2 text-[hsl(var(--primary))]">02</span>Does source mapping land on the JSX?</div>
