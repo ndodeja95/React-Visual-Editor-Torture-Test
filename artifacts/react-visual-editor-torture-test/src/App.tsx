@@ -392,7 +392,6 @@ function AppShell() {
           <div className="mono text-[10px] leading-5 text-[hsl(var(--sidebar-foreground)/.55)]">SELECT / MAP / EDIT<br />A compatibility lab for source-aware tooling.</div>
         </div>
       </aside>
-
       <main className="lab-main">
         <header className="command-bar">
           <div className="mx-auto flex max-w-[1500px] flex-wrap items-center gap-3 px-4 py-3 lg:px-8">
@@ -434,7 +433,7 @@ function AppShell() {
                 <div className="rounded-md bg-[hsl(var(--primary))] p-2 text-[hsl(var(--primary-foreground))]"><MousePointer2 className="h-4 w-4" /></div>
                 <div className="min-w-0 flex-1">
                   <div className="eyebrow text-[hsl(var(--primary))]">Manual protocol</div>
-                  <h2 className="mt-1 text-base font-semibold md:text-lg">One pass. Three questions.</h2>
+                  <h2 className="mt-1 font-semibold md:text-lg text-[50px]">One pass. Three questions.</h2>
                   <div className="mt-3 grid gap-2 text-sm text-[hsl(var(--muted-foreground))] sm:grid-cols-3">
                     <div><span className="mono mr-2 text-[hsl(var(--primary))]">01</span>Can I select the intended node?</div>
                     <div><span className="mono mr-2 text-[hsl(var(--primary))]">02</span>Does source mapping land on the JSX?</div>
@@ -534,7 +533,6 @@ function AppShell() {
           </footer>
         </div>
       </main>
-
       {dialogOpen && <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setDialogOpen(false); }}><div className="modal-panel rounded-lg p-5" role="dialog" aria-modal="true" aria-labelledby="dialog-title" data-testid="modal-dialog"><div className="flex items-start justify-between"><div><div className="eyebrow text-[hsl(var(--primary))]">Modal target</div><h2 id="dialog-title" className="mt-1 text-lg font-semibold">Selection boundary</h2></div><button className="control-button ghost" onClick={() => setDialogOpen(false)} data-testid="button-close-dialog" aria-label="Close dialog"><X className="h-4 w-4" /></button></div><p className="mt-4 text-sm text-[hsl(var(--muted-foreground))]">This dialog is rendered by the same client-side runtime. Close it, then inspect whether focus returns to the trigger.</p><button className="control-button primary mt-5" onClick={() => setDialogOpen(false)} data-testid="button-confirm-dialog"><Check className="h-3.5 w-3.5" />Return to fixture</button></div></div>}
     </div>
   );
