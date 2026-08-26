@@ -133,7 +133,7 @@ function TestCard({ id, title, pattern, expected, instruction, children, result 
         <span className="rounded-full border border-[hsl(var(--primary)/.35)] bg-[hsl(var(--primary)/.1)] px-2 py-1 text-[10px] font-semibold uppercase tracking-[.08em] text-[hsl(var(--primary))]" data-testid={`badge-expected-${id}`}>{expected}</span>
       </div>
       <div className="mt-3 flex flex-wrap gap-1.5 pl-2">
-        <span className="source-chip mono rounded px-2 py-1 text-[10px]" data-testid={`text-pattern-${id}`}>{pattern}</span>
+        {id !== 'DOC-001' && <span className="source-chip mono rounded px-2 py-1 text-[10px]" data-testid={`text-pattern-${id}`}>{pattern}</span>}
       </div>
       <div className="target-well mt-4 min-h-[74px] rounded-md p-3" data-testid={`${id}-target`}>{children}</div>
       <div className="mt-3 grid gap-2 border-t border-[hsl(var(--border))] pt-3 pl-2 text-xs">

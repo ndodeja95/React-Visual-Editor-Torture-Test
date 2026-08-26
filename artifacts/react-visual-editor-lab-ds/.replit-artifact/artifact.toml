@@ -1,0 +1,19 @@
+kind = "design-system"
+previewPath = "/react-visual-editor-lab-ds/"
+title = "React Visual Editor Lab Design System"
+description = "A dark-first technical design system extracted from the React Visual Editor Torture Test: compact documentation layouts, source-mapping fixtures, high-contrast controls, semantic surfaces, and editor-friendly interaction states."
+version = "1.0.0"
+id = "artifacts/react-visual-editor-lab-ds"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/react-visual-editor-lab-ds/" ]
+localPort = 19396
+
+[services.development]
+run = "pnpm --filter @workspace/react-visual-editor-lab-ds run dev"
+
+[services.env]
+PORT = "19396"
+BASE_PATH = "/react-visual-editor-lab-ds/"
