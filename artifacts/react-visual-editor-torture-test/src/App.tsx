@@ -126,7 +126,7 @@ function TestCard({ id, title, pattern, expected, instruction, children, result 
           <div className="mono text-[11px] font-semibold text-[hsl(var(--primary))]" data-testid={`text-id-${id}`}>{id}</div>
           <h3 className="mt-1 text-[15px] font-semibold tracking-[-.02em]" data-testid={`text-title-${id}`}>{title}</h3>
         </div>
-        <span className="rounded-full border border-[hsl(var(--primary)/.35)] bg-[hsl(var(--primary)/.1)] px-2 py-1 text-[10px] font-semibold uppercase tracking-[.08em] text-[hsl(var(--primary))]" data-testid={`badge-expected-${id}`}>{expected}</span>
+        <span className="rounded-full border border-[hsl(var(--primary)/.35)] bg-[hsl(var(--primary)/.1)] px-2 py-1 text-[10px] font-semibold uppercase tracking-[.08em] text-[#2cf233]" data-testid={`badge-expected-${id}`}>{expected}</span>
       </div>
       <div className="mt-3 flex flex-wrap gap-1.5 pl-2">
         <span className="source-chip mono rounded px-2 py-1 text-[10px]" data-testid={`text-pattern-${id}`}>{pattern}</span>
