@@ -393,7 +393,7 @@ function AppShell() {
         </div>
       </aside>
       <main className="lab-main">
-        <header className="command-bar">
+        <header className="command-bar !border-[hsl(var(--sidebar-border))] !bg-[hsl(var(--sidebar)/.96)]">
           <div className="mx-auto flex max-w-[1500px] flex-wrap items-center gap-3 px-4 py-3 lg:px-8">
             <button className="control-button ghost mobile-only" onClick={() => setMobileNav(true)} data-testid="button-open-mobile-nav" aria-label="Open navigation"><Menu className="h-4 w-4" /></button>
             <div className="relative min-w-[220px] flex-1 md:max-w-[360px]">
