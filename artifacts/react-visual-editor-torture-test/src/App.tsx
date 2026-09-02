@@ -414,14 +414,14 @@ function AppShell() {
           <section className="hero-grid relative overflow-hidden rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card)/.74)] p-5 sm:p-7 lg:p-9" data-testid="section-lab-intro">
             <div className="relative z-10 max-w-3xl">
               <div className="eyebrow flex items-center gap-2 text-[hsl(var(--primary))]"><span className="status-dot live" />Compatibility lab / client-side only</div>
-              <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-[.98] tracking-[-.06em] sm:text-6xl">Break the editor<br /><span className="text-[hsl(var(--primary))]">before users do.</span></h1>
+              <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-[.98] tracking-[-.06em] sm:text-6xl">Break the editor<br /><span className="text-[#2cf2b0]">before users do.</span></h1>
               <p className="mt-5 max-w-xl text-sm leading-6 text-[hsl(var(--muted-foreground))]">A deliberate set of source-mapping traps for React 19, TypeScript, Vite, and Tailwind. Select an element. Edit it. Move it. Make it appear.</p>
             </div>
              <span className="absolute right-24 top-12 z-20 h-5 w-5 rounded-full bg-green-400 ring-4 ring-green-300/20 shadow-[0_0_18px_6px_rgba(74,222,128,0.7)]" data-testid="hero-glow" role="img" aria-label="Glowing green status indicator" />
             <div className="absolute -right-8 -top-8 hidden h-56 w-56 rotate-12 border-[20px] border-[hsl(var(--primary)/.16)] sm:block" aria-hidden="true" />
             <div className="mt-7 grid max-w-3xl grid-cols-2 gap-2 border-t border-[hsl(var(--border))] pt-4 sm:grid-cols-4">
               <div><div className="mono text-xl font-semibold text-[hsl(var(--primary))]">{catalog.length}</div><div className="eyebrow mt-1 text-[hsl(var(--muted-foreground))]">test cases</div></div>
-              <div><div className="mono text-xl font-semibold">13</div><div className="eyebrow mt-1 text-[hsl(var(--muted-foreground))]">categories</div></div>
+              <div><div className="mono font-semibold text-[50px]">13</div><div className="eyebrow mt-1 text-[hsl(var(--muted-foreground))]">categories</div></div>
               <div><div className="mono text-xl font-semibold">0</div><div className="eyebrow mt-1 text-[hsl(var(--muted-foreground))]">network deps</div></div>
               <div><div className="mono text-xl font-semibold text-[hsl(var(--secondary-foreground))]">19</div><div className="eyebrow mt-1 text-[hsl(var(--muted-foreground))]">react target</div></div>
             </div>
@@ -433,7 +433,7 @@ function AppShell() {
                 <div className="rounded-md bg-[hsl(var(--primary))] p-2 text-[hsl(var(--primary-foreground))]"><MousePointer2 className="h-4 w-4" /></div>
                 <div className="min-w-0 flex-1">
                   <div className="eyebrow text-[hsl(var(--primary))]">Manual protocol</div>
-                  <h2 className="mt-1 font-semibold md:text-lg text-[50px]">One pass. Three questions.</h2>
+                  <h2 className="mt-1 font-semibold md:text-lg text-[24px]">One pass. Three questions.</h2>
                   <div className="mt-3 grid gap-2 text-sm text-[hsl(var(--muted-foreground))] sm:grid-cols-3">
                     <div><span className="mono mr-2 text-[hsl(var(--primary))]">01</span>Can I select the intended node?</div>
                     <div><span className="mono mr-2 text-[hsl(var(--primary))]">02</span>Does source mapping land on the JSX?</div>
