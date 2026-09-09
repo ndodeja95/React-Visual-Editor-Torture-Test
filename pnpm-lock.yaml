@@ -709,6 +709,9 @@ importers:
       '@workspace/api-client-react':
         specifier: workspace:*
         version: link:../../lib/api-client-react
+      '@workspace/react-visual-editor-lab-ds':
+        specifier: workspace:*
+        version: link:../react-visual-editor-lab-ds
       class-variance-authority:
         specifier: 'catalog:'
         version: 0.7.1

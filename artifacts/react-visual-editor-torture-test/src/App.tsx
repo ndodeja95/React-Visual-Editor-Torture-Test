@@ -1,8 +1,12 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from '@/components/error-boundary';
-import { Toaster } from '@/components/ui/toaster';
-import { TooltipProvider } from '@/components/ui/tooltip';
+import { Toaster } from '@workspace/react-visual-editor-lab-ds/components/ui/toaster';
+import { TooltipProvider } from '@workspace/react-visual-editor-lab-ds/components/ui/tooltip';
+import { LabCard } from '@workspace/react-visual-editor-lab-ds/components/ui/lab-card';
+import { LabInput } from '@workspace/react-visual-editor-lab-ds/components/ui/lab-input';
+import { SourceChip } from '@workspace/react-visual-editor-lab-ds/components/ui/source-chip';
+import { StatusDot } from '@workspace/react-visual-editor-lab-ds/components/ui/status-dot';
 import {
   Activity,
   ArrowDownAZ,
@@ -31,6 +35,7 @@ import {
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 import * as THREE from 'three';
 import NotFound from '@/pages/not-found';
+import { LabButton } from '@workspace/react-visual-editor-lab-ds/components/ui/lab-button';
 
 const queryClient = new QueryClient();
 
@@ -120,7 +125,7 @@ type TestCardProps = CatalogItem & { children: ReactNode; result?: string };
 
 function TestCard({ id, title, pattern, expected, instruction, children, result }: TestCardProps) {
   return (
-    <article className="test-card rounded-lg p-4" id={`card-${id}`} data-testid={`card-${id}`}>
+    <LabCard className="test-card rounded-lg" id={`card-${id}`} data-testid={`card-${id}`}>
       <div className="flex flex-wrap items-start justify-between gap-3 pl-2">
         <div>
           <div className="mono text-[11px] font-semibold text-[hsl(var(--primary))]" data-testid={`text-id-${id}`}>{id}</div>
@@ -129,14 +134,14 @@ function TestCard({ id, title, pattern, expected, instruction, children, result 
         <span className="rounded-full border border-[hsl(var(--primary)/.35)] bg-[hsl(var(--primary)/.1)] px-2 py-1 text-[10px] font-semibold uppercase tracking-[.08em] text-[#2cf233]" data-testid={`badge-expected-${id}`}>{expected}</span>
       </div>
       <div className="mt-3 flex flex-wrap gap-1.5 pl-2">
-        <span className="source-chip mono rounded px-2 py-1 text-[10px]" data-testid={`text-pattern-${id}`}>{pattern}</span>
+         <SourceChip className="mono rounded px-2 py-1 text-[10px]" data-testid={`text-pattern-${id}`}>{pattern}</SourceChip>
       </div>
       <div className="target-well mt-4 min-h-[74px] rounded-md p-3" data-testid={`${id}-target`}>{children}</div>
       <div className="mt-3 grid gap-2 border-t border-[hsl(var(--border))] pt-3 pl-2 text-xs">
         <div className="flex gap-2 text-[hsl(var(--muted-foreground))]"><CircleHelp className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[hsl(var(--primary))]" /><span>{instruction}</span></div>
         {result && <div className="mono flex gap-2 text-[11px] text-[hsl(var(--secondary-foreground))]" data-testid={`result-${id}`}><Check className="h-3.5 w-3.5 shrink-0" />{result}</div>}
       </div>
-    </article>
+    </LabCard>
   );
 }
 
@@ -398,11 +403,11 @@ function AppShell() {
             <button className="control-button ghost mobile-only" onClick={() => setMobileNav(true)} data-testid="button-open-mobile-nav" aria-label="Open navigation"><Menu className="h-4 w-4" /></button>
             <div className="relative min-w-[220px] flex-1 md:max-w-[360px]">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[hsl(var(--muted-foreground))]" />
-              <input className="control-input pl-9" type="search" placeholder="Find a test ID, tag, or pattern" value={search} onChange={(event) => setSearch(event.target.value)} data-testid="input-search" aria-label="Search test cases" />
+              <LabInput className="control-input pl-9" type="search" placeholder="Find a test ID, tag, or pattern" value={search} onChange={(event) => setSearch(event.target.value)} data-testid="input-search" aria-label="Search test cases" />
             </div>
             <div className="flex items-center gap-2">
               <span className="eyebrow hidden text-[hsl(var(--muted-foreground))] sm:inline">View</span>
-              <button className={`control-button ${!matrix ? 'primary' : ''}`} onClick={() => setMatrix(false)} data-testid="button-grid-view"><Layers3 className="h-3.5 w-3.5" />Grid</button>
+              <LabButton variant={!matrix ? 'primary' : 'default'} className="control-button" onClick={() => setMatrix(false)} data-testid="button-grid-view"><Layers3 className="h-3.5 w-3.5" />Grid</LabButton>
               <button className={`control-button ${matrix ? 'primary' : ''}`} onClick={() => setMatrix(true)} data-testid="button-matrix-view"><ClipboardCheck className="h-3.5 w-3.5" />Matrix</button>
               <button className="control-button ghost" onClick={() => setDark((value) => !value)} data-testid="button-theme-toggle" aria-label="Toggle theme">{dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}</button>
               <button className="control-button ghost" onClick={reset} data-testid="button-reset-runtime"><RotateCcw className="h-4 w-4" /><span className="hidden sm:inline">Reset</span></button>
@@ -413,7 +418,7 @@ function AppShell() {
         <div className="mx-auto max-w-[1500px] px-4 py-6 lg:px-8 lg:py-8">
           <section className="hero-grid relative overflow-hidden rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card)/.74)] p-5 sm:p-7 lg:p-9" data-testid="section-lab-intro">
             <div className="relative z-10 max-w-3xl">
-              <div className="eyebrow flex items-center gap-2 text-[hsl(var(--primary))]"><span className="status-dot live" />Compatibility lab / client-side only</div>
+               <div className="eyebrow flex items-center gap-2 text-[hsl(var(--primary))]"><StatusDot live />Compatibility lab / client-side only</div>
               <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-[.98] tracking-[-.06em] sm:text-6xl">Break the editor<br /><span className="text-[#2cf2b0]">before users do.</span></h1>
               <p className="mt-5 max-w-xl text-sm leading-6 text-[hsl(var(--muted-foreground))]">A deliberate set of source-mapping traps for React 19, TypeScript, Vite, and Tailwind. Select an element. Edit it. Move it. Make it appear.</p>
             </div>
